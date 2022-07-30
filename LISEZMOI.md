@@ -1,4 +1,4 @@
-[Version française](./LISEZMOI.md)
+[English version](./README.md)
 
 <h1 align="center">CARS</h1>
 <p align="center">
