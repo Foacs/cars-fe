@@ -1,0 +1,65 @@
+name: Build & Deploy (DEV)
+
+on:
+  # Allows this workflow to be run manually
+  workflow_dispatch:
+
+jobs:
+  # This job will build the sources locally, stop the application on the server, install it on the server and start it again
+  deploy:
+    name: Deploy
+
+    # The job will run on an ubuntu distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Runs 'npm install'
+      - name: Install
+        run: npm install
+
+      # Runs 'npm run build'
+      - name: Build
+        run: npm run build
+
+      # Stops the application on the server
+      - name: Stop
+        uses: appleboy/ssh-action@master
+        with:
+          host: '${{ secrets.DEV_HOST }}'
+          username: '${{ secrets.DEV_USERNAME }}'
+          password: '${{ secrets.DEV_PASSWORD }}'
+          script: systemctl stop cars && echo 'App stopped successfully'
+
+      # Deletes the current content on the server
+      - name: Clean
+        uses: appleboy/ssh-action@master
+        with:
+          host: '${{ secrets.DEV_HOST }}'
+          username: '${{ secrets.DEV_USERNAME }}'
+          password: '${{ secrets.DEV_PASSWORD }}'
+          script: rm -rf /app/cars/build/*
+
+      # Copies the 'build' folder to the server
+      - name: Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: '${{ secrets.DEV_HOST }}'
+          username: '${{ secrets.DEV_USERNAME }}'
+          password: '${{ secrets.DEV_PASSWORD }}'
+          local_path: './build/*'
+          remote_path: '/app/cars/build'
+          sftpArgs: '-o ConnectTimeout=5'
+          sftp_only: true
+
+      # Starts the application on the server
+      - name: Start
+        uses: appleboy/ssh-action@master
+        with:
+          host: '${{ secrets.DEV_HOST }}'
+          username: '${{ secrets.DEV_USERNAME }}'
+          password: '${{ secrets.DEV_PASSWORD }}'
+          script: systemctl start cars && echo 'App started successfully'
