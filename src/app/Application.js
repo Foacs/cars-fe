@@ -16,36 +16,17 @@ import BottomNavigation from "./BottomNavigation";
 import Drawer from "./Drawer";
 
 function Application() {
-  const { theme, switchMode } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const isMobile = useMobile(theme);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
-
-  const [drawerOpen, setDrawerOpen] = React.useState(true);
 
   return (
     <Box display="flex">
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        <AppBar
-          anchorEl={anchorEl}
-          menuOpen={menuOpen}
-          setAnchorEl={setAnchorEl}
-          switchMode={switchMode}
-          theme={theme}
-        />
+        <AppBar />
 
-        {isMobile ? (
-          <BottomNavigation />
-        ) : (
-          <Drawer
-            drawerOpen={drawerOpen}
-            setDrawerOpen={setDrawerOpen}
-            theme={theme}
-          />
-        )}
+        {isMobile ? <BottomNavigation /> : <Drawer />}
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />

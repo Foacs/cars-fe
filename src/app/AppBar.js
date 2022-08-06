@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   AppBar as MuiAppBar,
   Grid,
@@ -12,31 +12,16 @@ import {
 import { AppLabel } from "../resources/images";
 import { LightModeIcon, MenuIcon, NightModeIcon } from "../resources/icons";
 import { labels } from "../resources";
+import { ThemeContext } from "../contexts";
 
-const AppBar = ({ anchorEl, menuOpen, setAnchorEl, switchMode, theme }) => {
-  // region Menu
-  const menu = (
-    <Menu
-      id="menu"
-      anchorEl={anchorEl}
-      open={menuOpen}
-      onClose={() => setAnchorEl(null)}
-      MenuListProps={{ "aria-labelledby": "menu-button" }}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-    >
-      <MenuItem onClick={switchMode} sx={{ minWidth: "12rem" }}>
-        {theme.darkMode ? <NightModeIcon /> : <LightModeIcon />}
-        <Typography sx={{ pl: "1rem" }}>
-          {theme.darkMode ? labels.darkMode : labels.lightMode}
-        </Typography>
-      </MenuItem>
-    </Menu>
-  );
-  // endregion
+const AppBar = () => {
+  const { theme, switchMode } = useContext(ThemeContext);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
 
   return (
-    <React.Fragment>
+    <>
       <MuiAppBar position="fixed">
         <Toolbar>
           <Grid container alignItems="center" spacing={3}>
@@ -65,8 +50,23 @@ const AppBar = ({ anchorEl, menuOpen, setAnchorEl, switchMode, theme }) => {
         </Toolbar>
       </MuiAppBar>
 
-      {menu}
-    </React.Fragment>
+      <Menu
+        id="menu"
+        anchorEl={anchorEl}
+        open={menuOpen}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{ "aria-labelledby": "menu-button" }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem onClick={switchMode} sx={{ minWidth: "12rem" }}>
+          {theme.darkMode ? <NightModeIcon /> : <LightModeIcon />}
+          <Typography sx={{ pl: "1rem" }}>
+            {theme.darkMode ? labels.darkMode : labels.lightMode}
+          </Typography>
+        </MenuItem>
+      </Menu>
+    </>
   );
 };
 

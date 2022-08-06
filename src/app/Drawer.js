@@ -11,9 +11,14 @@ import {
   Toolbar,
 } from "@mui/material";
 import { AppIcon, ChevronLeftIcon, ChevronRightIcon } from "../resources/icons";
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../contexts";
 
-const Drawer = ({ drawerOpen, setDrawerOpen, theme }) => {
+const Drawer = () => {
+  const { theme } = useContext(ThemeContext);
+
+  const [drawerOpen, setDrawerOpen] = React.useState(true);
+
   const [selectedMenu, setSelectedMenu] = React.useState(0);
   const [selectedSubMenu, setSelectedSubMenu] = React.useState(0);
 
