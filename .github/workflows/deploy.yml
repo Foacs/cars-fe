@@ -1,4 +1,4 @@
-name: Build & Deploy - DEV
+name: Build & Deploy
 
 on:
   # Allows this workflow to be run manually
@@ -29,18 +29,18 @@ jobs:
       - name: Stop
         uses: appleboy/ssh-action@0.1.5
         with:
-          host: '${{ secrets.DEV_SERVER_IP }}'
-          username: 'ci'
-          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          host: '${{ secrets.HOST }}'
+          username: '${{ secrets.USERNAME }}'
+          password: '${{ secrets.PASSWORD }}'
           script: stop cars
 
       # Copies the 'build' folder to the server
       - name: Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          username: 'ci'
-          server: '${{ secrets.DEV_SERVER_IP }}'
-          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          server: '${{ secrets.HOST }}'
+          username: '${{ secrets.USERNAME }}'
+          password: '${{ secrets.PASSWORD }}'
           local_path: './build/*'
           remote_path: '/app/cars'
           sftpArgs: '-o ConnectTimeout=5'
@@ -51,7 +51,7 @@ jobs:
       - name: Start
         uses: appleboy/ssh-action@0.1.5
         with:
-          host: '${{ secrets.DEV_SERVER_IP }}'
-          username: 'ci'
-          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          host: '${{ secrets.HOST }}'
+          username: '${{ secrets.USERNAME }}'
+          password: '${{ secrets.PASSWORD }}'
           script: start cars
