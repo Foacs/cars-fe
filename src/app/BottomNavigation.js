@@ -35,7 +35,7 @@ const BottomNavigation = () => {
             key={`key_${index}`}
             label={`Boutton ${index + 1}`}
             icon={<AppIcon />}
-          ></BottomNavigationAction>
+          />
         ))}
       </MuiBottomNavigation>
     </Paper>
