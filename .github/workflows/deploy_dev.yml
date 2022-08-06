@@ -1,0 +1,57 @@
+name: Build & Deploy - DEV
+
+on:
+  # Allows this workflow to be run manually
+  workflow_dispatch:
+
+jobs:
+  # This job will build the sources locally, stop the application on the server, install it on the server and start it again
+  deploy:
+    name: Deploy
+
+    # The job will run on an ubuntu distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Runs 'npm install'
+      - name: Install
+        run: npm install
+
+      # Runs 'npm run build'
+      - name: Build
+        run: npm run build
+
+      # Stops the application on the server
+      - name: Stop
+        uses: appleboy/ssh-action@0.1.5
+        with:
+          host: '${{ secrets.DEV_SERVER_IP }}'
+          username: 'ci'
+          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          script: stop cars
+
+      # Copies the 'build' folder to the server
+      - name: Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: 'ci'
+          server: '${{ secrets.DEV_SERVER_IP }}'
+          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          local_path: './build/*'
+          remote_path: '/app/cars'
+          sftpArgs: '-o ConnectTimeout=5'
+          sftp_only: true
+          delete_remote_files: true
+
+      # Starts the application on the server
+      - name: Start
+        uses: appleboy/ssh-action@0.1.5
+        with:
+          host: '${{ secrets.DEV_SERVER_IP }}'
+          username: 'ci'
+          password: '${{ secrets.DEV_SERVER_PASSWORD }}'
+          script: start cars
