@@ -6,7 +6,7 @@
 <br/>
 
 <p align="center">
-    <a href="https://github.com/Foacs/cars/actions/workflows/build.yml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/workflows/build.yml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/Foacs/cars/actions/workflows/build.yml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/actions/workflows/build.yml/badge.svg?branch=main" /></a>
     <a href="https://github.com/Foacs/cars/issues" title="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Foacs/cars"></a>
     <a href="https://github.com/Foacs/cars/blob/main/LICENSE.md" title="License"><img alt="License" src="https://img.shields.io/badge/license-CeCILL-blueviolet" /></a>
     <br/>
