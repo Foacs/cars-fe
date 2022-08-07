@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  # This workflow will automatically run when code is pushed to the main branch
+  push:
+    branches: [ "main" ]
+  # This workflow will automatically run when a pull request is opened to the main branch
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # This job will build the sources locally and execute the tests
+  build:
+
+    # The job will run on an ubuntu distribution
+    runs-on: ubuntu-latest
+
+    # The job will use the 16 major version on Node.js
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Runs 'npm ci'
+      - name: CI
+        run: npm ci
+
+      # Runs 'npm run build'
+      - run: npm run build
+
+      # Runs 'npm run test --if-present'
+      - run: npm test --if-present
