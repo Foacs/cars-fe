@@ -15,21 +15,16 @@ jobs:
     # The job will run on an ubuntu distribution
     runs-on: ubuntu-latest
 
-    # The job will use the 16 major version on Node.js
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Setup Node.js
-      - name: Setup Node.js ${{ matrix.node-version }}
+      # Setup Node.js 16
+      - name: Setup Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
           cache: 'npm'
 
       # Runs 'npm ci'
