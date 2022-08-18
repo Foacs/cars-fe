@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {createTheme, useMediaQuery} from '@mui/material';
 
 // region Default theme from Material UI
@@ -53,6 +54,7 @@ const commonTheme = {
 const lightTheme = createTheme({
   ...commonTheme,
   colors: {
+    ...commonTheme.colors,
     application: {
       label: "#fff",
     },
@@ -63,11 +65,21 @@ const lightTheme = createTheme({
     background: {
       default: "#eeeeee",
     },
+    breadcrumbs: {
+      main: "#ffffffcf",
+    },
     primary: {
       main: "#1565c0",
     },
     secondary: {
       main: "#fb8c00",
+    },
+    text: {
+      ...commonTheme.palette.text,
+      breadcrumbs: {
+        active: "#fff",
+        inactive: "#ffffffcf",
+      },
     },
   },
 });
@@ -77,6 +89,7 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   ...commonTheme,
   colors: {
+    ...commonTheme.colors,
     application: {
       label: "#fff",
     },
@@ -99,6 +112,9 @@ const darkTheme = createTheme({
       default: "#121212",
       paper: "#333333",
     },
+    breadcrumbs: {
+      main: "#ffffff7f",
+    },
     divider: "rgba(255, 255, 255, 0.12)",
     error: {
       main: "#f44336",
@@ -120,6 +136,10 @@ const darkTheme = createTheme({
       icon: "#ffffff7f",
       primary: "#fff",
       secondary: "#ffffffb2",
+      breadcrumbs: {
+        active: "#fff",
+        inactive: "#ffffff7f",
+      },
     },
     warning: {
       main: "#ffa726",
@@ -130,28 +150,46 @@ const darkTheme = createTheme({
 
 // region Context provider
 export const ThemeContextProvider = ({ ...otherProps }) => {
-  // Get current system preference for dark mode
+  // region Dark mode
+  // Get the current system preference for the dark mode
   const [darkMode, setDarkMode] = React.useState(
     useMediaQuery("(prefers-color-scheme: dark)")
   );
 
-  // Select theme based on system preference
+  // Select a theme based on the system preference
   const theme = darkMode ? darkTheme : lightTheme;
 
-  // Create simple function to manually switch modes
-  const switchMode = () => {
-    setDarkMode((prev) => !prev);
-  };
+  // Function to switch modes
+  const switchMode = () => setDarkMode((prev) => !prev);
 
-  // Add listener on system preference
+  // Add a listener on the system preference
   window
     .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (event) => {
-      setDarkMode(event.matches);
-    });
+    .addEventListener("change", (event) => setDarkMode(event.matches));
+  // endregion
+
+  // region Mobile
+  const useMobile = () => {
+    // Get the maximum width of the mobile mode from the current theme
+    const maxWidth = theme.breakpoints.values.md;
+
+    // Initialize the mobile mode
+    const [isMobile, setMobile] = React.useState(window.innerWidth < maxWidth);
+
+    // Add a listener on the window resizing to update the mobile mode
+    React.useEffect(() => {
+      const handleResize = () => setMobile(window.innerWidth < maxWidth);
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, [maxWidth]);
+
+    return isMobile;
+  };
+  // endregion
 
   return (
-    <ThemeContext.Provider value={{ theme, switchMode }}>
+    <ThemeContext.Provider value={{ switchMode, theme, useMobile }}>
       {otherProps.children}
     </ThemeContext.Provider>
   );

@@ -1,6 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   AppBar as MuiAppBar,
+  Breadcrumbs,
   Grid,
   IconButton,
   Menu,
@@ -9,39 +12,83 @@ import {
   Typography,
 } from "@mui/material";
 
-import { AppLabel } from "../resources/images";
-import { LightModeIcon, MenuIcon, NightModeIcon } from "../resources/icons";
+import { RouterContext, ThemeContext } from "../contexts";
 import { labels } from "../resources";
-import { ThemeContext } from "../contexts";
+import {
+  ChevronRightIcon,
+  LightModeIcon,
+  MenuIcon,
+  NightModeIcon,
+} from "../resources/icons";
+import { AppLabel } from "../resources/images";
 
 const AppBar = () => {
-  const { theme, switchMode } = useContext(ThemeContext);
+  // region Contexts
+  const { useBreadcrumbs } = React.useContext(RouterContext);
+  const { switchMode, theme, useMobile } = React.useContext(ThemeContext);
+  // endregion
 
+  // region State
   const [anchorEl, setAnchorEl] = React.useState(null);
+  // endregion
+
+  // region Fields
+  const breadcrumbs = useBreadcrumbs();
+  const isMobile = useMobile();
   const menuOpen = Boolean(anchorEl);
+  // endregion
 
   return (
     <>
+      {/* Application bar */}
       <MuiAppBar position="fixed">
         <Toolbar>
           <Grid container alignItems="center" spacing={3}>
+            {/* Application label */}
             <Grid item xs="auto">
-              <IconButton disableFocusRipple disableRipple edge="start">
-                <AppLabel color={theme.colors.application.label} />
-              </IconButton>
+              <Link to="">
+                <IconButton disableFocusRipple disableRipple edge="start">
+                  <AppLabel color={theme.colors.application.label} />
+                </IconButton>
+              </Link>
             </Grid>
 
-            <Grid item xs></Grid>
+            {/* Breadcrumbs */}
+            <Grid item xs>
+              {!isMobile && (
+                <Breadcrumbs
+                  itemsAfterCollapse={2}
+                  separator={<ChevronRightIcon color="breadcrumbs" />}
+                >
+                  <div />
+                  {breadcrumbs.parentRoutes.map((route) => (
+                    <Link
+                      key={route.key}
+                      to={route.path}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Typography color="text.breadcrumbs.inactive">
+                        {route.name}
+                      </Typography>
+                    </Link>
+                  ))}
+                  <Typography color="text.breadcrumbs.active">
+                    {breadcrumbs.currentRoute.name}
+                  </Typography>
+                </Breadcrumbs>
+              )}
+            </Grid>
 
+            {/* Menu button */}
             <Grid item xs="auto">
               <IconButton
                 id="menu-button"
+                color="white"
                 aria-label="menu"
                 aria-haspopup="true"
                 aria-controls={menuOpen ? "menu" : undefined}
                 aria-expanded={menuOpen ? "true" : undefined}
                 onClick={(event) => setAnchorEl(event.currentTarget)}
-                color="white"
               >
                 <MenuIcon />
               </IconButton>
@@ -50,14 +97,15 @@ const AppBar = () => {
         </Toolbar>
       </MuiAppBar>
 
+      {/* Menu */}
       <Menu
         id="menu"
         anchorEl={anchorEl}
         open={menuOpen}
         onClose={() => setAnchorEl(null)}
-        MenuListProps={{ "aria-labelledby": "menu-button" }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        MenuListProps={{ "aria-labelledby": "menu-button" }}
       >
         <MenuItem onClick={switchMode} sx={{ minWidth: "12rem" }}>
           {theme.darkMode ? <NightModeIcon /> : <LightModeIcon />}
