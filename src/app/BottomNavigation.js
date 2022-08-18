@@ -1,40 +1,43 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   BottomNavigation as MuiBottomNavigation,
-  BottomNavigationAction as MuiBottomNavigationAction,
+  BottomNavigationAction,
   Paper,
-  styled,
 } from "@mui/material";
 
-import { AppIcon } from "../resources/icons";
-
-const BottomNavigationAction = styled(MuiBottomNavigationAction)(
-  ({ theme }) => ({
-    "&.Mui-selected": {
-      color: theme.palette.primary.light,
-    },
-  })
-);
+import { RouterContext } from "../contexts";
 
 const BottomNavigation = () => {
-  const [value, setValue] = React.useState(0);
+  // region Contexts
+  const { primaryPagesRoutes, useBreadcrumbs } =
+    React.useContext(RouterContext);
+  // endregion
+
+  // region Fields
+  const breadcrumbs = useBreadcrumbs();
+  // endregion
 
   return (
     <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
       elevation={3}
+      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
     >
       <MuiBottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
+        value={primaryPagesRoutes.findIndex((primaryRoute) =>
+          Boolean(
+            breadcrumbs.routes.find((route) => route.key === primaryRoute.key)
+          )
+        )}
       >
-        {[...Array(4).keys()].map((_, index) => (
+        {primaryPagesRoutes.map((route) => (
           <BottomNavigationAction
-            key={`key_${index}`}
-            label={`Boutton ${index + 1}`}
-            icon={<AppIcon />}
+            key={route.key}
+            component={Link}
+            to={route.path}
+            icon={route.icon}
+            label={route.name}
           />
         ))}
       </MuiBottomNavigation>

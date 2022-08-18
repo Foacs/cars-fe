@@ -1,3 +1,6 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   Box,
   Divider,
@@ -10,17 +13,43 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { AppIcon, ChevronLeftIcon, ChevronRightIcon } from "../resources/icons";
-import React, { useContext } from "react";
-import { ThemeContext } from "../contexts";
+
+import { RouterContext, ThemeContext } from "../contexts";
+import { ChevronLeftIcon, ChevronRightIcon } from "../resources/icons";
 
 const Drawer = () => {
-  const { theme } = useContext(ThemeContext);
+  // region Contexts
+  const { primaryPagesRoutes, secondaryPagesRoutes, useBreadcrumbs } =
+    React.useContext(RouterContext);
+  const { theme } = React.useContext(ThemeContext);
+  // endregion
 
+  // region State
   const [drawerOpen, setDrawerOpen] = React.useState(true);
+  // endregion
 
-  const [selectedMenu, setSelectedMenu] = React.useState(0);
-  const [selectedSubMenu, setSelectedSubMenu] = React.useState(0);
+  // region Fields
+  const breadcrumbs = useBreadcrumbs();
+  // endregion
+
+  // region Function to render a route as a list item
+  const renderRoute = (route) => (
+    <ListItem key={route.key} disablePadding>
+      <ListItemButton
+        selected={Boolean(
+          breadcrumbs.routes.find(
+            (breadcrumbsRoute) => breadcrumbsRoute.key === route.key
+          )
+        )}
+        component={Link}
+        to={route.path}
+      >
+        <ListItemIcon>{route.icon}</ListItemIcon>
+        <ListItemText>{route.name}</ListItemText>
+      </ListItemButton>
+    </ListItem>
+  );
+  // endregion
 
   return (
     <MuiDrawer
@@ -49,63 +78,49 @@ const Drawer = () => {
         },
       }}
     >
+      {/* Empty toolbar to shift the content */}
       <Toolbar />
+
+      <List>
+        {/* Primary pages menu items */}
+        {primaryPagesRoutes.map(renderRoute)}
+
+        <Divider />
+
+        {/* Secondary pages menu items */}
+        {secondaryPagesRoutes
+          .filter((secondaryRoute) =>
+            breadcrumbs.routes.find(
+              (route) => route.key === secondaryRoute.parentKey
+            )
+          )
+          .map(renderRoute)}
+      </List>
+
+      {/* Button to expand/collapse the drawer */}
       <Box
         sx={{
-          display: "flex",
           alignItems: "center",
+          bottom: "0",
+          display: "flex",
           justifyContent: "flex-end",
-          padding: theme.spacing(0, 1),
-          mt: "0.5em",
-          mb: "0.5em",
+          padding: theme.spacing(1, 1),
+          position: "absolute",
+          width: "100%",
         }}
       >
         <IconButton
-          aria-label="Drawer"
           id="long-button"
+          color="inherit"
+          aria-label="Drawer"
           aria-controls={drawerOpen ? "long-menu" : undefined}
           aria-expanded={drawerOpen ? "true" : undefined}
           aria-haspopup="true"
-          color="inherit"
-          sx={{ pr: "11px" }}
-          onClick={() => {
-            setDrawerOpen(!drawerOpen);
-          }}
+          onClick={() => setDrawerOpen(!drawerOpen)}
         >
           {drawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Box>
-      <List>
-        {[...Array(4).keys()].map((_, index) => (
-          <ListItem key={`key_${index}`} disablePadding>
-            <ListItemButton
-              selected={selectedMenu === index}
-              onClick={() => setSelectedMenu(index)}
-            >
-              <ListItemIcon>
-                <AppIcon />
-              </ListItemIcon>
-              <ListItemText primary={`Boutton ${index + 1}`} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {[...Array(3).keys()].map((number, index) => (
-          <ListItem key={`key_${number}`} disablePadding>
-            <ListItemButton
-              selected={selectedSubMenu === index}
-              onClick={() => setSelectedSubMenu(index)}
-            >
-              <ListItemIcon>
-                <AppIcon />
-              </ListItemIcon>
-              <ListItemText primary={`Boutton ${number + 5}`} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </MuiDrawer>
   );
 };
