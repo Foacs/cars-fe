@@ -19,11 +19,7 @@ import { RouterContext, ThemeContext } from "../contexts";
 function Application() {
   // region Contexts
   const { routes } = React.useContext(RouterContext);
-  const { theme, useMobile } = React.useContext(ThemeContext);
-  // endregion
-
-  // region Fields
-  const isMobile = useMobile();
+  const { theme, isMobile } = React.useContext(ThemeContext);
   // endregion
 
   return (

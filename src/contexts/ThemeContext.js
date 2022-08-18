@@ -169,27 +169,18 @@ export const ThemeContextProvider = ({ ...otherProps }) => {
   // endregion
 
   // region Mobile
-  const useMobile = () => {
-    // Get the maximum width of the mobile mode from the current theme
-    const maxWidth = theme.breakpoints.values.md;
+  // Get the maximum width of the mobile mode from the current theme
+  const maxWidth = theme.breakpoints.values.md;
 
-    // Initialize the mobile mode
-    const [isMobile, setMobile] = React.useState(window.innerWidth < maxWidth);
+  // Initialize the mobile mode
+  const [isMobile, setMobile] = React.useState(window.innerWidth < maxWidth);
 
-    // Add a listener on the window resizing to update the mobile mode
-    React.useEffect(() => {
-      const handleResize = () => setMobile(window.innerWidth < maxWidth);
-
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, [maxWidth]);
-
-    return isMobile;
-  };
+  // Add a listener on the window resizing to update the mobile mode
+  window.addEventListener("resize", () => setMobile(window.innerWidth < maxWidth));
   // endregion
 
   return (
-    <ThemeContext.Provider value={{ switchMode, theme, useMobile }}>
+    <ThemeContext.Provider value={{ switchMode, theme, isMobile }}>
       {otherProps.children}
     </ThemeContext.Provider>
   );

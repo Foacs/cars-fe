@@ -25,7 +25,7 @@ import { AppLabel } from "../resources/images";
 const AppBar = () => {
   // region Contexts
   const { useBreadcrumbs } = React.useContext(RouterContext);
-  const { switchMode, theme, useMobile } = React.useContext(ThemeContext);
+  const { switchMode, theme, isMobile } = React.useContext(ThemeContext);
   // endregion
 
   // region State
@@ -34,7 +34,6 @@ const AppBar = () => {
 
   // region Fields
   const breadcrumbs = useBreadcrumbs();
-  const isMobile = useMobile();
   const menuOpen = Boolean(anchorEl);
   // endregion
 
@@ -60,7 +59,7 @@ const AppBar = () => {
                   itemsAfterCollapse={2}
                   separator={<ChevronRightIcon color="breadcrumbs" />}
                 >
-                  <div />
+                  <span />
                   {breadcrumbs.parentRoutes.map((route) => (
                     <Link
                       key={route.key}

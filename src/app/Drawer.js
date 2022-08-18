@@ -32,6 +32,25 @@ const Drawer = () => {
   const breadcrumbs = useBreadcrumbs();
   // endregion
 
+  // region Function to render a route as a list item
+  const renderRoute = (route) => (
+    <ListItem key={route.key} disablePadding>
+      <ListItemButton
+        selected={Boolean(
+          breadcrumbs.routes.find(
+            (breadcrumbsRoute) => breadcrumbsRoute.key === route.key
+          )
+        )}
+        component={Link}
+        to={route.path}
+      >
+        <ListItemIcon>{route.icon}</ListItemIcon>
+        <ListItemText>{route.name}</ListItemText>
+      </ListItemButton>
+    </ListItem>
+  );
+  // endregion
+
   return (
     <MuiDrawer
       variant="permanent"
@@ -64,22 +83,7 @@ const Drawer = () => {
 
       <List>
         {/* Primary pages menu items */}
-        {primaryPagesRoutes.map((primaryRoute) => (
-          <ListItem key={primaryRoute.key} disablePadding>
-            <ListItemButton
-              selected={Boolean(
-                breadcrumbs.routes.find(
-                  (route) => route.key === primaryRoute.key
-                )
-              )}
-              component={Link}
-              to={primaryRoute.path}
-            >
-              <ListItemIcon>{primaryRoute.icon}</ListItemIcon>
-              <ListItemText>{primaryRoute.name}</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {primaryPagesRoutes.map(renderRoute)}
 
         <Divider />
 
@@ -90,22 +94,7 @@ const Drawer = () => {
               (route) => route.key === secondaryRoute.parentKey
             )
           )
-          .map((secondaryRoute) => (
-            <ListItem key={secondaryRoute.key} disablePadding>
-              <ListItemButton
-                selected={Boolean(
-                  breadcrumbs.routes.find(
-                    (route) => route.key === secondaryRoute.key
-                  )
-                )}
-                component={Link}
-                to={secondaryRoute.path}
-              >
-                <ListItemIcon>{secondaryRoute.icon}</ListItemIcon>
-                <ListItemText>{secondaryRoute.name}</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          ))}
+          .map(renderRoute)}
       </List>
 
       {/* Button to expand/collapse the drawer */}

@@ -1,12 +1,27 @@
-import React from 'react';
-import {generatePath, matchPath, Navigate, useLocation} from 'react-router-dom';
+import React from "react";
+import {
+  generatePath,
+  matchPath,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
 import {
-  Home, PageNotFound, PageOne, PageThree, PageTwo, SubPageOneId, SubPageOneIdOne, SubPageOneOne, SubPageOneOneOne,
-  SubPageOneTwo, SubPageTwoOne, SubPageTwoTwo
-} from '../pages';
+  Home,
+  PageNotFound,
+  PageOne,
+  PageThree,
+  PageTwo,
+  SubPageOneId,
+  SubPageOneIdOne,
+  SubPageOneOne,
+  SubPageOneOneOne,
+  SubPageOneTwo,
+  SubPageTwoOne,
+  SubPageTwoTwo,
+} from "../pages";
 
-import {AppIcon} from '../resources/icons';
+import { AppIcon } from "../resources/icons";
 
 // region Routes
 const routes = [
@@ -46,7 +61,6 @@ const routes = [
     path: "/one/one/one",
     key: "one_one_one",
     element: <SubPageOneOneOne />,
-    icon: <AppIcon />,
     parentKey: "one_one",
     isMenuItem: false,
   },
@@ -123,6 +137,11 @@ const routes = [
 
 // region Context provider
 export const RouterContextProvider = ({ ...otherProps }) => {
+  // region Function to generate the interpolated name
+  const generateName = (name, params) =>
+    name.replace(/:\w*/, (word) => params[word.substring(1)] || word);
+  // endregion
+
   // region Hook to get the current matched route
   const useCurrentRoute = () => {
     // Retrieve the current path
@@ -138,10 +157,7 @@ export const RouterContextProvider = ({ ...otherProps }) => {
           // Override the name and path with the params, and add the params to the route
           return {
             ...route,
-            name: route.name.replace(
-              /:\w*/,
-              (word) => match.params[word.substring(1)] || word
-            ),
+            name: generateName(route.name, match.params),
             path: generatePath(route.path, match.params),
             params: match.params,
           };
@@ -185,29 +201,25 @@ export const RouterContextProvider = ({ ...otherProps }) => {
 
     // Iterative function to get the parent routes from a given one
     const getParentRoutes = (currentRoute, parentRoutes) => {
-      // If the current route has a parent key, look for its parent route
-      if (currentRoute.parentKey) {
-        // Find the parent route
-        let previousOne = routes.find(
-          (route) => currentRoute.parentKey === route.key
-        );
-
-        // Override the name and path with the params
-        previousOne = {
-          ...previousOne,
-          name: previousOne.name.replace(
-            /:\w*/,
-            (word) => params[word.substring(1)] || word
-          ),
-          path: generatePath(previousOne.path, params),
-        };
-
-        // Get the found parent's parent route
-        return getParentRoutes(previousOne, [previousOne, ...parentRoutes]);
+      // If the current route doesn't have a parent key, return the found parent routes
+      if (!currentRoute.parentKey) {
+        return parentRoutes;
       }
 
-      // Return the found parent routes
-      return parentRoutes;
+      // Find the parent route
+      let parentRoute = routes.find(
+        (route) => currentRoute.parentKey === route.key
+      );
+
+      // Override the name and path with the params
+      parentRoute = {
+        ...parentRoute,
+        name: generateName(parentRoute.name, params),
+        path: generatePath(parentRoute.path, params),
+      };
+
+      // Get the found parent's parent route
+      return getParentRoutes(parentRoute, [parentRoute, ...parentRoutes]);
     };
 
     // Get the parent routes
