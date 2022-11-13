@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import {createTheme, useMediaQuery} from '@mui/material';
+import { createTheme, useMediaQuery } from "@mui/material";
 
 // region Default theme from Material UI
 const defaultTheme = createTheme();
@@ -68,11 +68,23 @@ const lightTheme = createTheme({
     breadcrumbs: {
       main: "#ffffffcf",
     },
+    error: {
+      main: "#E64A19",
+      background: "#FFEBEE",
+    },
+    info: {
+      main: "#1E88E5",
+      background: "#E3F2FD",
+    },
     primary: {
       main: "#1565c0",
     },
     secondary: {
       main: "#fb8c00",
+    },
+    success: {
+      main: "#43A047",
+      background: "#E8F5E9",
     },
     text: {
       ...commonTheme.palette.text,
@@ -80,6 +92,10 @@ const lightTheme = createTheme({
         active: "#fff",
         inactive: "#ffffffcf",
       },
+    },
+    warning: {
+      main: "#FFB300",
+      background: "#FFF8E1",
     },
   },
 });
@@ -117,10 +133,12 @@ const darkTheme = createTheme({
     },
     divider: "rgba(255, 255, 255, 0.12)",
     error: {
-      main: "#f44336",
+      main: "#BF360C",
+      background: "#FFEBEE",
     },
     info: {
-      main: "#29b6f6",
+      main: "#0D47A1",
+      background: "#E3F2FD",
     },
     primary: {
       main: "#546e7a",
@@ -129,7 +147,8 @@ const darkTheme = createTheme({
       main: "#ffb300",
     },
     success: {
-      main: "#66bb6a",
+      main: "#1B5E20",
+      background: "#E8F5E9",
     },
     text: {
       disabled: "#ffffff7f",
@@ -142,7 +161,8 @@ const darkTheme = createTheme({
       },
     },
     warning: {
-      main: "#ffa726",
+      main: "#FF8F00",
+      background: "#FFF8E1",
     },
   },
 });
@@ -176,7 +196,9 @@ export const ThemeContextProvider = ({ ...otherProps }) => {
   const [isMobile, setMobile] = React.useState(window.innerWidth < maxWidth);
 
   // Add a listener on the window resizing to update the mobile mode
-  window.addEventListener("resize", () => setMobile(window.innerWidth < maxWidth));
+  window.addEventListener("resize", () =>
+    setMobile(window.innerWidth < maxWidth)
+  );
   // endregion
 
   return (

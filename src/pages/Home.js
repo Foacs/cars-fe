@@ -1,7 +1,15 @@
-import { Grid, Paper } from "@mui/material";
 import React from "react";
 
+import { Button, Grid, Paper } from "@mui/material";
+
+import { AlertContext } from "../contexts";
+import { severities } from "../resources";
+
 const Home = () => {
+  // region Contexts
+  const { sendAlert } = React.useContext(AlertContext);
+  // endregion
+
   return (
     <>
       <Grid container spacing={2}>
@@ -62,6 +70,39 @@ const Home = () => {
           </Paper>
         </Grid>
       </Grid>
+
+      <Button
+        color="info"
+        onClick={sendAlert("Information", severities.info)}
+        sx={{ mt: "1rem", mr: "1rem" }}
+        variant="outlined"
+      >
+        Info
+      </Button>
+      <Button
+        color="success"
+        onClick={sendAlert("Succès", severities.success)}
+        sx={{ mt: "1rem", mr: "1rem" }}
+        variant="outlined"
+      >
+        Succès
+      </Button>
+      <Button
+        color="warning"
+        onClick={sendAlert("Avertissement", severities.warning)}
+        sx={{ mt: "1rem", mr: "1rem" }}
+        variant="outlined"
+      >
+        Avertissement
+      </Button>
+      <Button
+        color="error"
+        onClick={sendAlert("Erreur", severities.error)}
+        sx={{ mt: "1rem" }}
+        variant="outlined"
+      >
+        Erreur
+      </Button>
     </>
   );
 };
