@@ -12,10 +12,7 @@ export const AlertContextProvider = ({ ...otherProps }) => {
       setAlert({ ...alertQueue[0] });
       setAlertQueue((prev) => prev.slice(1));
       setAlertOpen(true);
-    }/* else if (snackQueue.length && message && isAlertOpen) {
-      // Close an active snack when a new one is added
-      setAlertOpen(false);
-    }*/
+    }
   }, [alertQueue, alert, isAlertOpen]);
 
   const sendAlert = (message, severity) => () => {

@@ -66,7 +66,7 @@ function Application() {
             autoHideDuration={5000}
             open={isAlertOpen}
             onClose={onAlertClose}
-            sx={{ mt: isMobile ? "4.5rem" : "-1rem", mr: isMobile ? 0 : "3rem" }}
+            sx={{ mt: isMobile ? "4.5rem" : "-1rem", mr: isMobile ? 0 : "4rem" }}
             TransitionComponent={Slide}
             TransitionProps={{ onExited: onAlertExited }}
           >
