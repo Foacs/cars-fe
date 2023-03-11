@@ -1,11 +1,11 @@
-<h1 align="center">CARS</h1>
-<h6 align="center">
-    Cars Administration Reactive Software
+<h1 style="text-align:center">CARS</h1>
+<h6 style="text-align:center">
+    Cars Administration Reactive Software Frontend
 </h6>
 
 <br/>
 
-<p align="center">
+<p style="text-align:center">
     <a href="https://github.com/Foacs/cars/actions/workflows/build.yml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/actions/workflows/build.yml/badge.svg?branch=main" /></a>
     <a href="https://github.com/Foacs/cars/issues" title="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Foacs/cars"></a>
     <a href="https://github.com/Foacs/cars/blob/main/LICENSE.md" title="License"><img alt="License" src="https://img.shields.io/badge/license-CeCILL-blueviolet" /></a>
@@ -14,16 +14,6 @@
     <a href="https://www.npmjs.com/" title="npm version"><img alt="npm version" src="https://img.shields.io/badge/npm-8.11.0-blue" /></a>
     <a href="https://reactjs.org/" title="React JS version"><img alt="React JS version" src="https://img.shields.io/badge/reactjs-18.2.0-blue" /></a>
     <a href="https://mui.com/" title="MUI version"><img alt="MUI version" src="https://img.shields.io/badge/mui-5.9.2-blue" /></a>
-</p>
-
-<p align="center">
-    <a href="https://en.wikipedia.org/wiki/JavaScript" title="Javascript"><img alt="Made with JavaScript" src="https://forthebadge.com/images/badges/made-with-javascript.svg" /></a>
-    <a href="https://en.wikipedia.org/wiki/Developer" title="Developer"><img alt="Built by developers" src="https://forthebadge.com/images/badges/built-by-developers.svg" /></a>
-    <a href="https://en.wikipedia.org/wiki/Open_source" title="Open source"><img alt="Open source" src="https://forthebadge.com/images/badges/open-source.svg" /></a>
-    <br/>
-    <a href="https://www.urbandictionary.com/define.php?term=SFW" title="SFW"><img alt="Kinda SFW" src="https://forthebadge.com/images/badges/kinda-sfw.svg" /></a>
-    <a href="https://eu.finalfantasyxiv.com/jobguide/blackmage/" title="Black magic"><img alt="Powered by black magic" src="https://forthebadge.com/images/badges/powered-by-black-magic.svg" /></a>
-    <a href="https://www.youtube.com/watch?v=XMZIAlKFRY4" title="Gluten free"><img alt="Gluten free" src="https://forthebadge.com/images/badges/gluten-free.svg" /></a>
 </p>
 
 # Table of Contents
