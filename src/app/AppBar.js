@@ -105,6 +105,7 @@ const AppBar = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         MenuListProps={{ "aria-labelledby": "menu-button" }}
+        sx={{ mt: "2rem" }}
       >
         <MenuItem onClick={switchMode} sx={{ minWidth: "12rem" }}>
           {theme.darkMode ? <NightModeIcon /> : <LightModeIcon />}
