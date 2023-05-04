@@ -1,11 +1,11 @@
-<h1 style="text-align:center">CARS</h1>
-<h6 style="text-align:center">
+<h1 style="text-align:center;">CARS</h1>
+<h6 style="text-align:center;">
     Cars Administration Reactive Software Frontend
 </h6>
 
 <br/>
 
-<p style="text-align:center">
+<p style="text-align:center;">
     <a href="https://github.com/Foacs/cars/actions/workflows/build.yml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/actions/workflows/build.yml/badge.svg?branch=main" /></a>
     <a href="https://github.com/Foacs/cars/issues" title="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Foacs/cars"></a>
     <a href="https://github.com/Foacs/cars/blob/main/LICENSE.md" title="License"><img alt="License" src="https://img.shields.io/badge/license-CeCILL-blueviolet" /></a>
@@ -39,7 +39,7 @@ CARS is a web application is intended to help with the management of vehicles re
 
 # Versions
 
-> For detailed information about the versions, check the [releases](https://github.com/Foacs/cars/releases).
+> For detailed information about the versions, check the [releases](https://github.com/Foacs/cars-fe/releases).
 
 # Getting Started
 
@@ -52,13 +52,13 @@ In order to set up the project, you need to have [Node JS](https://nodejs.org/) 
 1. Clone the repository
 
 ````shell
-> git clone https://github.com/Foacs/cars.git
+> git clone https://github.com/Foacs/cars-fe.git
 ````
 
 2. Move to the root directory of the repository
 
 ````shell
-> cd cars
+> cd cars-fe
 ````
 
 3. Run `npm install` to download all the needed dependencies
