@@ -8,11 +8,31 @@ const defaultTheme = createTheme();
 
 // region Common elements of the themes
 const commonTheme = {
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          "&, & *": {
+            scrollbarWidth: "none",
+          },
+          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+            display: "none",
+          },
+          "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+            display: "none",
+          },
+          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+            display: "none",
+          },
+        },
+      },
+    },
+  },
   dimensions: {
     drawer: {
       width: {
-        closed: "60px",
-        open: "240px",
+        extended: "320px",
+        compact: "3.25rem",
       },
     },
   },
@@ -24,24 +44,17 @@ const commonTheme = {
       main: "#fff",
     },
   },
+  shape: {
+    borderRadius: 12,
+  },
   transitions: {
-    drawer: {
-      close: {
-        transition: defaultTheme.transitions.create("width", {
-          duration: defaultTheme.transitions.duration.complex,
-          easing: defaultTheme.transitions.easing.easeInOut,
-        }),
-      },
-      open: {
-        transition: defaultTheme.transitions.create("width", {
-          duration: defaultTheme.transitions.duration.complex,
-          easing: defaultTheme.transitions.easing.easeInOut,
-        }),
-      },
-    },
+    drawer: `${defaultTheme.transitions.create("width", {
+      duration: defaultTheme.transitions.duration.complex,
+      easing: defaultTheme.transitions.easing.easeInOut,
+    })}!important`,
   },
   typography: {
-    fontFamily: '"Roboto",sans-serif',
+    fontFamily: "\"Roboto\",sans-serif",
   },
   zIndex: {
     appBar: defaultTheme.zIndex.drawer,
@@ -170,35 +183,31 @@ const darkTheme = createTheme({
 
 // region Context provider
 export const ThemeContextProvider = ({ ...otherProps }) => {
-  // region Dark mode
-  // Get the current system preference for the dark mode
-  const [darkMode, setDarkMode] = React.useState(
-    useMediaQuery("(prefers-color-scheme: dark)")
-  );
 
-  // Select a theme based on the system preference
-  const theme = darkMode ? darkTheme : lightTheme;
+  // region State
+  // Get the current system preference for the dark mode
+  const [ darkMode, setDarkMode ] = React.useState(useMediaQuery("(prefers-color-scheme: dark)"));
 
   // Function to switch modes
   const switchMode = () => setDarkMode((prev) => !prev);
 
-  // Add a listener on the system preference
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (event) => setDarkMode(event.matches));
-  // endregion
+  // Select a theme based on the system preference
+  const theme = darkMode ? darkTheme : lightTheme;
 
-  // region Mobile
   // Get the maximum width of the mobile mode from the current theme
   const maxWidth = theme.breakpoints.values.md;
 
   // Initialize the mobile mode
-  const [isMobile, setMobile] = React.useState(window.innerWidth < maxWidth);
+  const [ isMobile, setMobile ] = React.useState(window.innerWidth < maxWidth);
+  // endregion
 
-  // Add a listener on the window resizing to update the mobile mode
-  window.addEventListener("resize", () =>
-    setMobile(window.innerWidth < maxWidth)
-  );
+  // region Listener on the system preference to update the dark mode
+  window.matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (event) => setDarkMode(event.matches));
+  // endregion
+
+  // region Listener on the window resizing to update the mobile mode
+  window.addEventListener("resize", () => setMobile(window.innerWidth < maxWidth));
   // endregion
 
   return (

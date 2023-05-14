@@ -1,18 +1,40 @@
 import React from "react";
 
-import { Button, Grid, Paper } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 
 import { AlertContext } from "../contexts";
 import { severities } from "../resources";
+import { UnderConstructionIcon } from "../resources/icons";
 
-const Home = () => {
+const DashboardPage = () => {
+
   // region Contexts
   const { sendAlert } = React.useContext(AlertContext);
   // endregion
 
+  // region Render
   return (
     <>
       <Grid container spacing={2}>
+        <Grid item xs={12} md={12}>
+          <Paper sx={{ p: "1rem", textAlign: "center" }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <UnderConstructionIcon sx={{ fontSize: "10rem" }}/>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography>
+                  Désolé, cette page est actuellement en construction...
+                  <br/>
+                  <br/>
+                  Revenez plus tard!
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
         <Grid item xs={12} md={7}>
           <Paper sx={{ p: "1rem" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
@@ -79,6 +101,7 @@ const Home = () => {
       >
         Info
       </Button>
+
       <Button
         color="success"
         onClick={sendAlert("Succès", severities.success)}
@@ -87,6 +110,7 @@ const Home = () => {
       >
         Succès
       </Button>
+
       <Button
         color="warning"
         onClick={sendAlert("Avertissement", severities.warning)}
@@ -95,6 +119,7 @@ const Home = () => {
       >
         Avertissement
       </Button>
+
       <Button
         color="error"
         onClick={sendAlert("Erreur", severities.error)}
@@ -105,6 +130,8 @@ const Home = () => {
       </Button>
     </>
   );
+  // endregion
+
 };
 
-export default Home;
+export default DashboardPage;
