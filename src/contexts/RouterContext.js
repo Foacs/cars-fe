@@ -1,145 +1,335 @@
 import React from "react";
-import {
-  generatePath,
-  matchPath,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { generatePath, matchPath, Navigate, useLocation } from "react-router-dom";
 
 import {
-  Home,
-  PageNotFound,
-  PageOne,
-  PageThree,
-  PageTwo,
-  SubPageOneId,
-  SubPageOneIdOne,
-  SubPageOneOne,
-  SubPageOneOneOne,
-  SubPageOneTwo,
-  SubPageTwoOne,
-  SubPageTwoTwo,
+  AboutPage,
+  BillsManagementPage,
+  BillsOverviewPage,
+  BillsSearchPage,
+  CarPage,
+  CarsFavoritesPage,
+  CarsOverviewPage,
+  CarsSearchPage,
+  DashboardPage,
+  InterventionsFollowingPage,
+  InterventionsOverviewPage,
+  InterventionsSearchPage,
+  NotFoundPage,
+  PlanningMonthPage,
+  PlanningOverviewPage,
+  PlanningWeekPage,
+  PlanningYearPage,
+  SettingsPage,
+  WorkshopManagementPage,
+  WorkshopOverviewPage,
+  WorkshopSearchPage,
 } from "../pages";
 
-import { AppIcon } from "../resources/icons";
+import {
+  AboutIcon,
+  BillIcon,
+  CarIcon,
+  DashboardIcon,
+  EditIcon,
+  FavoriteIcon,
+  InterventionIcon,
+  MonthlyPlanningIcon,
+  NextInterventionsIcon,
+  PlanningIcon,
+  SearchIcon,
+  SettingsIcon,
+  WeeklyPlanningIcon,
+  WorkshopIcon,
+  YearlyPlanningIcon,
+} from "../resources/icons";
 
 // region Routes
 const routes = [
+  // region Redirection from '/'
   {
-    name: "Redirect",
+    name: "Redirection",
     path: "/",
+    element: <Navigate to="/dashboard"/>,
     key: "redirect",
-    element: <Navigate to="/home" />,
-    isMenuItem: false,
+  },
+  // endregion
+  // region Dashboard
+  {
+    name: "Tableau de bord",
+    path: "/dashboard",
+    element: <DashboardPage/>,
+    key: "dashboard",
+    menuProperties: {
+      name: "Tableau de bord",
+      icon: <DashboardIcon/>,
+      groupKey: "pre",
+    },
+  },
+  // endregion
+  // region Cars
+  {
+    name: "Voitures",
+    path: "/cars",
+    element: <CarsOverviewPage/>,
+    key: "cars_overview",
+    menuProperties: {
+      name: "Vue d'ensemble",
+      icon: <CarIcon/>,
+      groupKey: "cars",
+    },
   },
   {
-    name: "Home",
-    path: "/home",
-    key: "home",
-    element: <Home />,
-    isMenuItem: false,
+    name: "Favorites",
+    path: "/cars/favorites",
+    element: <CarsFavoritesPage/>,
+    key: "cars_favorites",
+    parentKey: "cars_overview",
+    menuProperties: {
+      name: "Favorites",
+      icon: <FavoriteIcon/>,
+      groupKey: "cars",
+    },
   },
   {
-    name: "One",
-    path: "/one",
-    key: "one",
-    element: <PageOne />,
-    icon: <AppIcon />,
-    isMenuItem: true,
-  },
-  {
-    name: "One",
-    path: "/one/one",
-    key: "one_one",
-    element: <SubPageOneOne />,
-    icon: <AppIcon />,
-    parentKey: "one",
-    isMenuItem: true,
-  },
-  {
-    name: "One",
-    path: "/one/one/one",
-    key: "one_one_one",
-    element: <SubPageOneOneOne />,
-    parentKey: "one_one",
-    isMenuItem: false,
-  },
-  {
-    name: "Two",
-    path: "/one/two",
-    key: "one_two",
-    element: <SubPageOneTwo />,
-    icon: <AppIcon />,
-    parentKey: "one",
-    isMenuItem: true,
+    name: "Recherche",
+    path: "/cars/search",
+    element: <CarsSearchPage/>,
+    key: "cars_search",
+    parentKey: "cars_overview",
+    menuProperties: {
+      name: "Recherche",
+      icon: <SearchIcon/>,
+      groupKey: "cars",
+    },
   },
   {
     name: ":id",
-    path: "/one/:id",
-    key: "one_id",
-    element: <SubPageOneId />,
-    icon: <AppIcon />,
-    parentKey: "one",
-    isMenuItem: false,
+    element: <CarPage/>,
+    path: "/cars/:id",
+    key: "cars_id",
+    parentKey: "cars_overview",
+  },
+  // endregion
+  // region Interventions
+  {
+    name: "Interventions",
+    path: "/interventions",
+    element: <InterventionsOverviewPage/>,
+    key: "interventions_overview",
+    menuProperties: {
+      name: "Vue d'ensemble",
+      icon: <InterventionIcon/>,
+      groupKey: "interventions",
+    },
   },
   {
-    name: "One",
-    path: "/one/:id/one",
-    key: "one_id_one",
-    element: <SubPageOneIdOne />,
-    icon: <AppIcon />,
-    parentKey: "one_id",
-    isMenuItem: false,
+    name: "Suivi",
+    path: "/interventions/following",
+    element: <InterventionsFollowingPage/>,
+    key: "interventions_following",
+    parentKey: "interventions_overview",
+    menuProperties: {
+      name: "Suivi",
+      icon: <NextInterventionsIcon/>,
+      groupKey: "interventions",
+    },
   },
   {
-    name: "Two",
-    path: "/two",
-    key: "two",
-    element: <PageTwo />,
-    icon: <AppIcon />,
-    isMenuItem: true,
+    name: "Recherche",
+    path: "/interventions/search",
+    element: <InterventionsSearchPage/>,
+    key: "interventions_search",
+    parentKey: "interventions_overview",
+    menuProperties: {
+      name: "Recherche",
+      icon: <SearchIcon/>,
+      groupKey: "interventions",
+    },
+  },
+  // endregion
+  // region Bills
+  {
+    name: "Factures",
+    path: "/bills",
+    element: <BillsOverviewPage/>,
+    key: "bills_overview",
+    menuProperties: {
+      name: "Vue d'ensemble",
+      icon: <BillIcon/>,
+      groupKey: "bills",
+    },
   },
   {
-    name: "One",
-    path: "/two/one",
-    key: "two_one",
-    element: <SubPageTwoOne />,
-    icon: <AppIcon />,
-    parentKey: "two",
-    isMenuItem: true,
+    name: "Gestion",
+    path: "/bills/management",
+    element: <BillsManagementPage/>,
+    key: "bills_management",
+    parentKey: "bills_overview",
+    menuProperties: {
+      name: "Gestion",
+      icon: <EditIcon/>,
+      groupKey: "bills",
+    },
   },
   {
-    name: "Two",
-    path: "/two/two",
-    key: "two_two",
-    element: <SubPageTwoTwo />,
-    icon: <AppIcon />,
-    parentKey: "two",
-    isMenuItem: false,
+    name: "Recherche",
+    path: "/bills/search",
+    element: <BillsSearchPage/>,
+    key: "bills_search",
+    parentKey: "bills_overview",
+    menuProperties: {
+      name: "Recherche",
+      icon: <SearchIcon/>,
+      groupKey: "bills",
+    },
+  },
+  // endregion
+  // region Workshop
+  {
+    name: "Atelier",
+    path: "/workshop",
+    element: <WorkshopOverviewPage/>,
+    key: "workshop_overview",
+    menuProperties: {
+      name: "Vue d'ensemble",
+      icon: <WorkshopIcon/>,
+      groupKey: "workshop",
+    },
   },
   {
-    name: "Three",
-    path: "/three",
-    key: "three",
-    element: <PageThree />,
-    icon: <AppIcon />,
-    isMenuItem: true,
+    name: "Gestion",
+    path: "/workshop/management",
+    element: <WorkshopManagementPage/>,
+    key: "workshop_management",
+    parentKey: "workshop_overview",
+    menuProperties: {
+      name: "Gestion",
+      icon: <EditIcon/>,
+      groupKey: "workshop",
+    },
   },
   {
-    name: "Not found",
+    name: "Recherche",
+    path: "/workshop/search",
+    element: <WorkshopSearchPage/>,
+    key: "workshop_search",
+    parentKey: "workshop_overview",
+    menuProperties: {
+      name: "Recherche",
+      icon: <SearchIcon/>,
+      groupKey: "workshop",
+    },
+  },
+  // endregion
+  // region Planning
+  {
+    name: "Planning",
+    path: "/planning",
+    element: <PlanningOverviewPage/>,
+    key: "planning_overview",
+    menuProperties: {
+      name: "Vue d'ensemble",
+      icon: <PlanningIcon/>,
+      groupKey: "planning",
+    },
+  },
+  {
+    name: "Semaine",
+    path: "/planning/week",
+    element: <PlanningWeekPage/>,
+    key: "planning_week",
+    parentKey: "planning_overview",
+    menuProperties: {
+      name: "Semaine",
+      icon: <WeeklyPlanningIcon/>,
+      groupKey: "planning",
+    },
+  },
+  {
+    name: "Mois",
+    path: "/planning/month",
+    element: <PlanningMonthPage/>,
+    key: "planning_month",
+    parentKey: "planning_overview",
+    menuProperties: {
+      name: "Mois",
+      icon: <MonthlyPlanningIcon/>,
+      groupKey: "planning",
+    },
+  },
+  {
+    name: "Année",
+    path: "/planning/year",
+    element: <PlanningYearPage/>,
+    key: "planning_year",
+    parentKey: "planning_overview",
+    menuProperties: {
+      name: "Année",
+      icon: <YearlyPlanningIcon/>,
+      groupKey: "planning",
+    },
+  },
+  // endregion
+  // region Settings
+  {
+    name: "Paramètres",
+    path: "/settings",
+    element: <SettingsPage/>,
+    key: "settings",
+    menuProperties: {
+      name: "Paramètres",
+      icon: <SettingsIcon/>,
+      groupKey: "post",
+    },
+  },
+  // endregion
+  // region About
+  {
+    name: "À propos",
+    path: "/about",
+    element: <AboutPage/>,
+    key: "about",
+    menuProperties: {
+      name: "À propos",
+      icon: <AboutIcon/>,
+      groupKey: "post",
+    },
+  },
+  // endregion
+  // region Page not found
+  {
+    name: "Page introuvable",
     path: "*",
     key: "not_found",
-    element: <PageNotFound />,
-    isMenuItem: false,
+    element: <NotFoundPage/>,
   },
+  // endregion
 ];
 // endregion
 
 // region Context provider
 export const RouterContextProvider = ({ ...otherProps }) => {
-  // region Function to generate the interpolated name
-  const generateName = (name, params) =>
-    name.replace(/:\w*/, (word) => params[word.substring(1)] || word);
+  // region Function to replace the params in the page name by their values
+  const generateName = (name, params) => name.replace(/:\w*/, word => params[word.substring(1)] || word);
+  // endregion
+
+  // region Function to retrieve the route matching the given path
+  const getMatchedRoute = (path) => {
+    for (const route of routes) {
+      // Try to match the current path
+      const match = matchPath({ path: route.path }, path);
+
+      if (match) {
+        // Override the name and path with the params, and add the params to the route
+        return {
+          ...route,
+          name: generateName(route.name, match.params),
+          path: generatePath(route.path, match.params),
+          params: match.params,
+        };
+      }
+    }
+  };
   // endregion
 
   // region Hook to get the current matched route
@@ -147,30 +337,12 @@ export const RouterContextProvider = ({ ...otherProps }) => {
     // Retrieve the current path
     const { pathname } = useLocation();
 
-    // Function to retrieve the route matching the given path
-    const getMatchedRoute = (path) => {
-      for (const route of routes) {
-        // Try to match the current path
-        const match = matchPath({ path: route.path }, path);
-
-        if (match) {
-          // Override the name and path with the params, and add the params to the route
-          return {
-            ...route,
-            name: generateName(route.name, match.params),
-            path: generatePath(route.path, match.params),
-            params: match.params,
-          };
-        }
-      }
-    };
-
     // Initialize the current matched route
-    const [currentRoute, setCurrentRoute] = React.useState(
-      getMatchedRoute(pathname)
+    const [ currentRoute, setCurrentRoute ] = React.useState(
+      getMatchedRoute(pathname),
     );
 
-    // If no route matched, throw an error
+    // If no route matched, throw an error (should not occur)
     if (!currentRoute) {
       throw new Error("Unknown route");
     }
@@ -179,13 +351,13 @@ export const RouterContextProvider = ({ ...otherProps }) => {
     React.useEffect(() => {
       const currentRoute = getMatchedRoute(pathname);
 
-      // If no route matched, throw an error
+      // If no route matched, throw an error (should not occur)
       if (!currentRoute) {
         throw new Error("Unknown route");
       }
 
       setCurrentRoute(currentRoute);
-    }, [pathname]);
+    }, [ pathname ]);
 
     return currentRoute;
   };
@@ -207,9 +379,7 @@ export const RouterContextProvider = ({ ...otherProps }) => {
       }
 
       // Find the parent route
-      let parentRoute = routes.find(
-        (route) => currentRoute.parentKey === route.key
-      );
+      let parentRoute = routes.find(route => currentRoute.parentKey === route.key);
 
       // Override the name and path with the params
       parentRoute = {
@@ -219,7 +389,7 @@ export const RouterContextProvider = ({ ...otherProps }) => {
       };
 
       // Get the found parent's parent route
-      return getParentRoutes(parentRoute, [parentRoute, ...parentRoutes]);
+      return getParentRoutes(parentRoute, [ parentRoute, ...parentRoutes ]);
     };
 
     // Get the parent routes
@@ -228,29 +398,15 @@ export const RouterContextProvider = ({ ...otherProps }) => {
     return {
       currentRoute: currentRoute,
       parentRoutes: parentRoutes,
-      routes: [...parentRoutes, currentRoute],
+      routes: [ ...parentRoutes, currentRoute ],
     };
   };
-  // endregion
-
-  // region Primary pages routes
-  const primaryPagesRoutes = routes.filter(
-    (route) => route.isMenuItem && !route.parentKey
-  );
-  // endregion
-
-  // region Secondary pages routes
-  const secondaryPagesRoutes = routes.filter(
-    (route) => route.isMenuItem && route.parentKey
-  );
   // endregion
 
   return (
     <RouterContext.Provider
       value={{
-        primaryPagesRoutes,
         routes,
-        secondaryPagesRoutes,
         useBreadcrumbs,
       }}
     >

@@ -3,11 +3,9 @@ import { Grid } from "@mui/material";
 
 import { AppLabel, AppWheel } from "./index";
 
-const AppLogo = ({
-  center = false,
-  labelColor = "inherit",
-  wheelColor = "inherit",
-}) => {
+const AppLogo = ({ center = false, labelColor = "inherit", wheelColor = "inherit" }) => {
+
+  // region Render
   return (
     <Grid
       container
@@ -17,13 +15,16 @@ const AppLogo = ({
       width={center ? "auto" : "min-content"}
     >
       <Grid item>
-        <AppWheel color={wheelColor} size="96px" />
+        <AppWheel color={wheelColor} size="96px"/>
       </Grid>
+
       <Grid item>
-        <AppLabel color={labelColor} />
+        <AppLabel color={labelColor}/>
       </Grid>
     </Grid>
   );
+  // endregion
+
 };
 
 export default AppLogo;
