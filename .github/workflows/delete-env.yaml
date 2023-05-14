@@ -1,0 +1,89 @@
+name: Delete AWS stack
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment name'
+        required: true
+        type: string
+
+run-name: Delete ${{ inputs.environment }} environment
+
+jobs:
+  delete-stack:
+    name: Delete stack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache AWS CLI
+        id: cache-aws-cli
+        uses: actions/cache@v3
+        with:
+          path: |
+            awscliv2.zip
+            aws
+          key: ${{ runner.os }}-aws-cli
+
+      - name: Download AWS CLI
+        if: steps.cache-aws-cli.outputs.cache-hit != 'true'
+        run: |
+          echo "----Get aws cli----"
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          echo "----Unzip----"
+          unzip -q awscliv2.zip
+
+      - name: Install AWS CLI
+        run: |
+          echo "----Install----"
+          sudo ./aws/install --update 
+          echo "----Check aws----"
+          aws --version
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region eu-west-3
+
+      - name: Configure stack name
+        id: stack-name
+        run: |
+          STACK_NAME="cars-fe-${{ inputs.environment }}"
+          echo "Stack name: $STACK_NAME"
+          echo "stackName=$STACK_NAME" >> $GITHUB_OUTPUT
+
+      - name: Clean S3 bucket
+        run: |
+          bucket=${{ steps.stack-name.outputs.stackName }}
+          versions=`aws s3api list-object-versions --bucket $bucket |jq '.Versions'`
+          markers=`aws s3api list-object-versions --bucket $bucket |jq '.DeleteMarkers'`
+          let count=`echo $versions |jq 'length'`-1
+
+          if [ $count -gt -1 ]; then
+            echo "----Remove files----"
+            for i in $(seq 0 $count); do
+              key=`echo $versions | jq .[$i].Key |sed -e 's/\"//g'`
+              versionId=`echo $versions | jq .[$i].VersionId |sed -e 's/\"//g'`
+              cmd="aws s3api delete-object --bucket $bucket --key $key --version-id $versionId"
+              echo $cmd
+              $cmd
+            done
+          fi
+
+          let count=`echo $markers |jq 'length'`-1
+
+          if [ $count -gt -1 ]; then
+            echo "----Remove delete markers----"
+            for i in $(seq 0 $count); do
+              key=`echo $markers | jq .[$i].Key |sed -e 's/\"//g'`
+              versionId=`echo $markers | jq .[$i].VersionId |sed -e 's/\"//g'`
+              cmd="aws s3api delete-object --bucket $bucket --key $key --version-id $versionId"
+              echo $cmd
+              $cmd
+            done
+          fi
+
+      - name: Delete stack
+        run: >
+          aws cloudformation delete-stack 
+          --stack-name ${{ steps.stack-name.outputs.stackName }}

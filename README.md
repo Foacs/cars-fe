@@ -6,8 +6,8 @@
 <br/>
 
 <p style="text-align:center;">
-    <a href="https://github.com/Foacs/cars/actions/workflows/build.yml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/actions/workflows/build.yml/badge.svg?branch=main" /></a>
-    <a href="https://github.com/Foacs/cars/issues" title="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Foacs/cars"></a>
+    <a href="https://github.com/Foacs/cars/actions/workflows/build.yaml" title="Build"><img alt="Build" src="https://github.com/Foacs/cars/actions/workflows/build.yaml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/Foacs/cars-fe/issues" title="GitHub issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Foacs/cars-fe"></a>
     <a href="https://github.com/Foacs/cars/blob/main/LICENSE.md" title="License"><img alt="License" src="https://img.shields.io/badge/license-CeCILL-blueviolet" /></a>
     <br/>
     <a href="https://nodejs.org/" title="Node JS version"><img alt="Node JS version" src="https://img.shields.io/badge/nodejs-16.16.0-blue" /></a>

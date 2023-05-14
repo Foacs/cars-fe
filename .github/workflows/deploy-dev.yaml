@@ -1,0 +1,17 @@
+name: Deploy to DEV
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+run-name: Deploy on dev environment
+
+jobs:
+  deploy:
+    name: Deploy on dev
+    uses: ./.github/workflows/deploy-env.yaml
+    with:
+      environment: dev
+    secrets: inherit
