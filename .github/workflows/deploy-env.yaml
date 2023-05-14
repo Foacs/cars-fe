@@ -1,0 +1,76 @@
+name: Deploy to AWS
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment name'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment name'
+        required: true
+        type: string
+
+run-name: Deploy on ${{ inputs.environment }} environment
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache AWS CLI
+        id: cache-aws-cli
+        uses: actions/cache@v3
+        with:
+          path: |
+            awscliv2.zip
+            aws
+          key: ${{ runner.os }}-aws-cli
+
+      - name: Download AWS CLI
+        if: steps.cache-aws-cli.outputs.cache-hit != 'true'
+        run: |
+          echo "----Get aws cli----"
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          echo "----Unzip----"
+          unzip -q awscliv2.zip
+
+      - name: Install AWS CLI
+        run: |
+          echo "----Install----"
+          sudo ./aws/install --update 
+          echo "----Check aws----"
+          aws --version
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region eu-west-3
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+
+      - name: CI
+        run: |
+          echo "----CI----"
+          npm ci
+
+      - name: Build
+        run: |
+          echo "----Build----"
+          npm run build
+
+      - name: Upload build sources to S3
+        run: |
+          echo "----Sync build sources file to S3 bucket----"
+          aws s3 sync ./build s3://cars-fe-${{ inputs.environment }}/

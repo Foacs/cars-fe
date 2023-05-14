@@ -1,0 +1,17 @@
+name: Deploy to PROD
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+run-name: Deploy on prod environment
+
+jobs:
+  deploy:
+    name: Deploy on prod
+    uses: ./.github/workflows/deploy-env.yaml
+    with:
+      environment: prod
+    secrets: inherit
