@@ -4,7 +4,7 @@ import { Grid, Paper, Typography } from "@mui/material";
 
 import { UnderConstructionIcon } from "../resources/icons";
 
-const InterventionsOverviewPage = () => {
+const CarsInProgressPage = () => {
 
   // region Render
   return (
@@ -28,34 +28,10 @@ const InterventionsOverviewPage = () => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={8}>
-        <Paper sx={{ p: "1rem", textAlign: "center" }}>
-          <Typography>
-            Informations globales
-          </Typography>
-        </Paper>
-      </Grid>
-
-      <Grid item xs={12} md={6}>
-        <Paper sx={{ p: "1rem", textAlign: "center" }}>
-          <Typography>
-            5 dernières interventions en retard
-          </Typography>
-        </Paper>
-      </Grid>
-
-      <Grid item xs={12} md={6}>
-        <Paper sx={{ p: "1rem", textAlign: "center" }}>
-          <Typography>
-            5 dernières interventions en cours
-          </Typography>
-        </Paper>
-      </Grid>
-
       <Grid item xs={12} md={12}>
         <Paper sx={{ p: "1rem", textAlign: "center" }}>
           <Typography>
-            Toutes les interventions avec pagination
+            Voitures en cours avec pagination
           </Typography>
         </Paper>
       </Grid>
@@ -65,4 +41,4 @@ const InterventionsOverviewPage = () => {
 
 };
 
-export default InterventionsOverviewPage;
+export default CarsInProgressPage;

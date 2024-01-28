@@ -41,7 +41,12 @@ const AppBar = () => {
   // region Elements
   // Drawer icon to open/close the drawer in mobile mode
   const drawerIcon = (
-    <IconButton id="drawer-button" aria-label="drawer_open" onClick={switchDrawerOpen}>
+    <IconButton
+      id="drawer-button"
+      aria-label="drawer_open"
+      onClick={switchDrawerOpen}
+      style={{ color: theme.palette.white.main }}
+    >
       <MenuIcon sx={isMobile && { width: "2rem", height: "2rem" }}/>
     </IconButton>
   );

@@ -34,9 +34,8 @@ const Drawer = () => {
   const menuGroups = [
     { key: "cars", label: "Voitures" },
     { key: "interventions", label: "Interventions" },
-    { key: "bills", label: "Factures" },
+    { key: "orders", label: "Commandes" },
     { key: "workshop", label: "Atelier" },
-    { key: "planning", label: "Planning" },
   ];
   // endregion
 
@@ -89,7 +88,7 @@ const Drawer = () => {
       >
         <ListItemIcon>{route.menuProperties.icon}</ListItemIcon>
 
-        <ListItemText>{route.menuProperties.name}</ListItemText>
+        <ListItemText>{route.menuProperties.name || route.name}</ListItemText>
       </ListItemButton>
     </ListItem>
   );
@@ -141,7 +140,7 @@ const Drawer = () => {
 
           <Divider/>
 
-          {utils.join(menuGroups.map((group) => renderMenuGroup(group, routes
+          {utils.join(menuGroups.map(group => renderMenuGroup(group, routes
             .filter(route => route.menuProperties?.groupKey === group.key)
             .map(renderMenuItem))), <Divider/>)}
 
