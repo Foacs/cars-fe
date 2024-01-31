@@ -4,10 +4,8 @@ node {
   }
 
   stage('Build') {
-    steps {
-      nodejs(nodeJSInstallationName: 'Node16_16') {
-        sh 'npm ci'
-      }
+    nodejs(nodeJSInstallationName: 'Node16_16') {
+      sh 'npm ci'
     }
   }
 
